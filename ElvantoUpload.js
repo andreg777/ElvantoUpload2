@@ -26,5 +26,5 @@ const ElvantoWebUpload = require("./ElvantoUpload");
   const webUpload = new ElvantoWebUpload(page, churchServices);
 
   await browser.close(); 
-  
+
 })();
