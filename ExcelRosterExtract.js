@@ -43,7 +43,7 @@ function ExcelRosterExtract ()
 		churchTypes.forEach((churchType) =>
 		{	  			
 			var startAddress = this.findAddressByContent(churchType.name);			
-			churchServices = this.readChurchTypeTable(startAddress);
+			churchServices = this.readChurchTypeTable(startAddress, churchType);
 		});
 
 		return churchServices;
@@ -64,7 +64,7 @@ function ExcelRosterExtract ()
 
 				churchService.date = date.date;
 				churchService.roster = [];
-				churchService.type = churchType;
+				churchService.churchType = churchType;
 
 				properties.forEach(property => 
 				{
@@ -176,11 +176,17 @@ function ExcelRosterExtract ()
 			currentValue = this.readCell(column,row);
 			
 			if(currentValue)
-			{
-				var currentDate = Date.parse(currentValue);
+			{				
+				var rosterDate = new Date(Date.parse(currentValue));
 
-				if(isNaN(currentDate) === false)
+				if(isNaN(rosterDate) === false)
 				{
+					let year = new Date().getFullYear();
+					let month = rosterDate.getMonth() + 1;
+					let day = rosterDate.getDate();
+
+					var currentDate = new Date(year, month, day);
+					
 					dates.push({ date: currentDate, column: column });
 				}
 			}

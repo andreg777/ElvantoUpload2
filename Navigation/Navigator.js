@@ -10,16 +10,19 @@ function Navigator(page)
 	
 	this.menu = new Menu(page);
 	
-    this.gotoApplication = async function()
+  this.gotoApplication = async function()
 	{
 	  await page.goto(appConstants.applicationUrl);
 	}
 	
-	
 	this.gotoAddService = async function ()
 	{
-	  await this.menu.hoverServices();
-    await this.menu.clickAddService();
+	  await this.menu.gotoAddService();
+	}
+
+	this.gotoAddVolunteers = async function()
+	{
+		await this.menu.gotoAddVolunteers();	
 	}
 }
 

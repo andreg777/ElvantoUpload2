@@ -10,14 +10,15 @@ function Menu(page)
 		await this.page.click('[href=\\/admin\\/services\\/]');
 	}
 	
-	this.hoverServices = async function()
-	{
-		await this.page.hover('[href=\\/admin\\/services\\/]');
-	}
 	
-	this.clickAddService = async function ()
+	this.gotoAddService = async function ()
 	{
-		await page.click('[href=\\/admin\\/services\\/add_service\\/]');
+		await page.goto(appConstants.addServicesUrl);	
+	}
+
+	this.gotoAddVolunteers = async function()
+	{
+		await this.page.click('[href *= \\/admin\\/services\\/service_volunteers]')
 	}
 }
 

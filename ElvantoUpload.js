@@ -4,18 +4,19 @@ const puppeteer = require('puppeteer');
 const xlsx = require('xlsx');
 const Navigator = require("./Navigation/Navigator");
 const ExcelRosterExtract = require("./ExcelRosterExtract");
-const ElvantoWebUpload = require("./ElvantoUpload");
+const ElvantoWebUpload = require("./WebUpload/ElvantoWebUpload");
+
 (async () => {
 
   const rosterExctract = new ExcelRosterExtract();
 
   const churchServices = await rosterExctract.readData();
   
-  const browser = await puppeteer.launch({headless: false, slowMo:50});
+  const browser = await puppeteer.launch({headless: false, slowMo:30});
 
   const page = await browser.newPage();
   
-  await page.setViewport({ width: 1366, height: 768});
+  //await page.setViewport({ width: 1366, height: 768});
   
   const navigator = new Navigator(page);
   
@@ -23,8 +24,10 @@ const ElvantoWebUpload = require("./ElvantoUpload");
 	
   await navigator.login.loginToClient();
   
-  const webUpload = new ElvantoWebUpload(page, churchServices);
+  const webUpload = new ElvantoWebUpload(page);
 
-  await browser.close(); 
+  await webUpload.process(churchServices);
+
+  //await browser.close(); 
 
 })();
