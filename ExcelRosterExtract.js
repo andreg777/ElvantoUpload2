@@ -210,9 +210,10 @@ function ExcelRosterExtract ()
 		  row++;
 		  
 		  currentValue = this.readCell(column, row);
-		  
+
 		  if (currentValue)
 		  {
+			  currentValue = currentValue.trim();
 			  properties.push({name: currentValue, row: row});
 		  }	  
 	  }

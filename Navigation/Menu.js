@@ -18,7 +18,16 @@ function Menu(page)
 
 	this.gotoAddVolunteers = async function()
 	{
-		await this.page.click('[href *= \\/admin\\/services\\/service_volunteers]')
+		const options = {};
+		await this.page.evaluate((options) =>
+		{
+			var elements = document.querySelectorAll('li a[href*=service_volunteers]');
+			
+			console.log(elements.length);
+
+			elements[0].click();
+
+		},options);
 	}
 }
 

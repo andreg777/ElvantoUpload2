@@ -8,26 +8,41 @@ const ElvantoWebUpload = require("./WebUpload/ElvantoWebUpload");
 
 (async () => {
 
-  const rosterExctract = new ExcelRosterExtract();
+  try{
+    const rosterExctract = new ExcelRosterExtract();
 
-  const churchServices = await rosterExctract.readData();
+    const churchServices = await rosterExctract.readData();
+    
+    const browser = await puppeteer.launch({headless: false, slowMo:30});
   
-  const browser = await puppeteer.launch({headless: false, slowMo:30});
+    const page = await browser.newPage();
+    
+    //await page.setViewport({ width: 1366, height: 768});
+    
+    const navigator = new Navigator(page);
+    
+    await navigator.gotoApplication();
+    
+    await navigator.login.loginToClient();
+    
+    const webUpload = new ElvantoWebUpload(page);
+  
+    //debugger;
 
-  const page = await browser.newPage();
+    await webUpload.process(churchServices);
   
-  //await page.setViewport({ width: 1366, height: 768});
+    debugger;
+    
+    //await browser.close(); 
   
-  const navigator = new Navigator(page);
-  
-  await navigator.gotoApplication();
-	
-  await navigator.login.loginToClient();
-  
-  const webUpload = new ElvantoWebUpload(page);
-
-  await webUpload.process(churchServices);
-
-  //await browser.close(); 
+  }catch(e)
+  {
+    var message = e.message;
+    
+    debugger;
+    var test = 0;
+    test++;
+    //console.log(e.toString())
+  }
 
 })();
