@@ -43,28 +43,31 @@ function AddVolunteersWebUpload(page)
         //debugger;
         var name = roster.name;
         await this.openPositionSearch(name);
-        //await this.selectPositionVolunteer(volunteer);
+        await this.selectPositionVolunteer(volunteer);
     }
     
     this.selectPositionVolunteer = async function(volunteer)
     {
-        const options = { volunteer: volunteer };
+        debugger;
         
+        const options = { volunteer: volunteer };
+
+        await page.waitFor(4000);
+  
         await this.page.evaluate((options) => 
-        {            
-            console.log('1');
+        {
             var xpathSearch =  `//a[contains(., '${ options.volunteer.lastname }')]`
-            console.log('2');
+            
+            console.log(xpathSearch);
+
             var volunteers = document.evaluate(xpathSearch, document, null, XPathResult.ANY_TYPE, null );
-            console.log('3');
             var volunteer = volunteers.iterateNext();
-            console.log('4');
             
             if(volunteer)
             {
-                //console.log("found volunteer " + JSON.stringify(volunteer));
                 volunteer.click();
-                document.querySelector('.btn.btn-sm.btn-confirmed.selected')
+                var confirmedButton = document.querySelector('.btn.btn-submit');
+                confirmedButton.click();
             }
             else
             {
@@ -75,33 +78,36 @@ function AddVolunteersWebUpload(page)
     }
 
     this.openPositionSearch = async function(name)
-    {
-        debugger;
-        
+    {        
         await page.waitFor(4000);
 
-        await this.page.evaluate(() =>
+        const options = { name: name };
+
+        await this.page.evaluate((options) =>
         {
-            console.log('test');
-        });
-
-        //const options = { name: name };
-        
-        //await this.page.evaluate(() => 
-        //{
+            var xpathSearch = '//div[contains(text(), "' + options.name + '")]';
             
-            //console.log('searching position ' + options.name);            
-            /*
-            var xpathSearch =  `//div[contains(., '${ options.name }')]`            
+            console.log(xpathSearch);
+            
             var positions = document.evaluate(xpathSearch, document, null, XPathResult.ANY_TYPE, null );
-
-            console.log('found: ' + positions.length);
 
             var position = positions.iterateNext();
 
+            if (position)
+            {
+                var searchButton = position.querySelector('a')
+                if(searchButton)
+                {
+                    searchButton.click();
+                }
+            }
+            else
+            {
+
+            }
             console.log(position);
-            */
-        //});
+            console.log('done');
+        },options);
 
         debugger;
     }

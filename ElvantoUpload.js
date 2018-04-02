@@ -31,17 +31,14 @@ const ElvantoWebUpload = require("./WebUpload/ElvantoWebUpload");
 
     await webUpload.process(churchServices);
   
-    debugger;
+    //debugger;
     
     //await browser.close(); 
   
   }catch(e)
   {
     var message = e.message;
-    
-    debugger;
-    var test = 0;
-    test++;
+    console.log(message);
     //console.log(e.toString())
   }
 

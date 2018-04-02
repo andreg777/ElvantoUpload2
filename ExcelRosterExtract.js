@@ -81,32 +81,42 @@ function ExcelRosterExtract ()
 	this.readVolunteers = function (column, row)
 	{
 		var rawData = this.readCell(column, row);
+		
 		var volunteers = this.splitVolunteers(rawData);
-
-		return volunteers;
+		
+		var sanitizedVolunteers = this.getSanitizedVolunteers(volunteers);
+		
+		return sanitizedVolunteers;
 	}
 	
-	this.getPersons = function(volunteers)
+	this.getSanitizedVolunteers = function(volunteers)
 	{
 		var sanitizedVolunteers = [];
 
-		for(var index = 0; i < volunteers.length; i++)
+		for(var index = 0; index < volunteers.length; index++)
 		{
-			const value = volunteers[i];
+			const value = volunteers[index];
 
 			const person = this.extractPersonDetails(value)
+
+			if(person)
+			{
+				sanitizedVolunteers.push(person);
+			}
 		}
+
+		return sanitizedVolunteers;
 	}
 
 	this.extractPersonDetails = function(value)
 	{
 		var testData = ['A.M. Geyer','A. Geyer','Ash Geyer','Geyer'];
 			
-	  value = value;
+	 	value = value;
 		
 		var firstLastname = value.split(' ');
 
-		var foundNothing = !firstLastname || firstLastname.length === 0;			
+		var foundNothing = firstLastname.length === 0;			
 		
 		if(foundNothing === false)
 		{
@@ -120,15 +130,18 @@ function ExcelRosterExtract ()
 			}
 	
 			const multipleNames = firstLastname.length == 2;		
-			if(twoNames)
+			if(multipleNames)
 			{
 				var names = firstLastname[0]
 				var lastname = firstLastname[1];
 				person.lastname = lastname;
 				
 				this.extractNamesAndInitials(person, names);
-			}				
+			}			
+
+			return person;
 		}
+		return null;
 	}
 	
 	this.extractNamesAndInitials = function(person, names)
