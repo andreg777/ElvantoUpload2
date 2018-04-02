@@ -11,12 +11,15 @@ function ElvantoWebUpload (page)
 
     this.process = async function (churchServices)
     {
-      const churchService = churchServices[0];
-      //debugger;
-      await this.addServiceWebUpload.uploadService(churchService);
-      //debugger;
-      await this.addVolunteersWebUpload.addServicePlan(churchService);
-      //debugger;
+      churchServices.forEach(async churchService =>
+      {
+        debugger;
+        
+        await this.addServiceWebUpload.uploadService(churchService);
+
+        await this.addVolunteersWebUpload.addServicePlan(churchService);
+  
+      });
     }
 }
 

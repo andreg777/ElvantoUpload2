@@ -49,8 +49,7 @@ function AddServiceWebUpload (page)
     }
 
     this.selectDate = async function(churchService)
-    {
-        
+    {     
         const year = new Date().getFullYear().toString().padStart(2,'0');
         const month = new Date().getMonth().toString().padStart(2,'0');
         const day = new Date().getDay().toString().padStart(2,'0');
@@ -58,11 +57,18 @@ function AddServiceWebUpload (page)
         var dateValue = day + '/' + month + '/' + year;
 
         //TEST
-        dateValue = "01/01/2015";
+        if(appConstants.testDate && appConstants.testDate.length >= 1)
+        {
+            dateValue = appConstants.testDate;
+        }
+        else 
+        {
+            debugger;
+            //check the date
+        }
 
         await this.page.evaluate((dateValue) => 
         {
-            console.log('23123123');
             var dateInput = document.querySelector('[name=serviceDateValue\\[1\\]]');
             dateInput.value = dateValue;
         }, dateValue);

@@ -15,14 +15,12 @@ function AddVolunteersWebUpload(page)
 
     this.updateRoster = async function(churchService)
     {
-        var roster = churchService.roster[0];
-        await this.updateVolunteers(roster);
+        churchService.roster.forEach(async (roster) => { await this.updateVolunteers(roster); } );        
     }
 
     this.updateVolunteers = async function(roster)
     {
-        var volunteer = roster.volunteers[0];
-        await this.updateVolunteer(roster, volunteer);
+        roster.volunteers.forEach(async (volunteer) => {this.updateVolunteer(roster, volunteer)});        
     }
 
     this.updateVolunteer = async function(roster, volunteer)
@@ -62,7 +60,6 @@ function AddVolunteersWebUpload(page)
                 console.log('volunteer not found');
             }
         },options);
-
     }
 
     this.openPositionSearch = async function(name)

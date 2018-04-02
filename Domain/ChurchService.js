@@ -1,10 +1,10 @@
 
 function ChurchService (options)
 {
-	this.name = null;
-	this.type = null;
 	this.roster = null;
-	
+	this.churchType = null;
+	this.date = null;
+		
 	Object.assign(this, options);
 }
 
