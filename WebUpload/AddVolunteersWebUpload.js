@@ -17,30 +17,16 @@ function AddVolunteersWebUpload(page)
     {
         var roster = churchService.roster[0];
         await this.updateVolunteers(roster);
-        /*
-        churchService.roster.forEach(async roster => 
-            {
-                await this.updateVolunteers(roster);
-            });
-        */
     }
 
     this.updateVolunteers = async function(roster)
     {
         var volunteer = roster.volunteers[0];
         await this.updateVolunteer(roster, volunteer);
-
-        /*
-        roster.volunteers.forEach(async (volunteer) =>
-        { 
-            await this.updateVolunteer(roster, volunteer)
-        });
-        */
     }
 
     this.updateVolunteer = async function(roster, volunteer)
     {
-        //debugger;
         var name = roster.name;
         await this.openPositionSearch(name);
         await this.selectPositionVolunteer(volunteer);
@@ -48,7 +34,6 @@ function AddVolunteersWebUpload(page)
     
     this.selectPositionVolunteer = async function(volunteer)
     {
-        debugger;
         
         const options = { volunteer: volunteer };
 
@@ -58,23 +43,26 @@ function AddVolunteersWebUpload(page)
         {
             var xpathSearch =  `//a[contains(., '${ options.volunteer.lastname }')]`
             
-            console.log(xpathSearch);
-
             var volunteers = document.evaluate(xpathSearch, document, null, XPathResult.ANY_TYPE, null );
+            
             var volunteer = volunteers.iterateNext();
             
-            if(volunteer)
+            if (volunteer)
             {
                 volunteer.click();
-                var confirmedButton = document.querySelector('.btn.btn-submit');
-                confirmedButton.click();
+
+                setTimeout(function()
+                {
+                    var confirmedButton = document.querySelector('.btn.btn-submit');
+                    confirmedButton.click();
+                },3000);                
             }
             else
             {
                 console.log('volunteer not found');
-                //TODO:log it or something
             }
         },options);
+
     }
 
     this.openPositionSearch = async function(name)
@@ -108,8 +96,6 @@ function AddVolunteersWebUpload(page)
             console.log(position);
             console.log('done');
         },options);
-
-        debugger;
     }
 }
 
