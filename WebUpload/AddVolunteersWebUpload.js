@@ -1,4 +1,5 @@
 const Navigator = require("../Navigation/Navigator");
+const appConstants = require("../appConstants");
 
 function AddVolunteersWebUpload(page)
 {
@@ -6,21 +7,30 @@ function AddVolunteersWebUpload(page)
 
     this.navigator = new Navigator(page);
 
-    this.addServicePlan = async function(churchService)
+    this.addVolunteers = async function(churchService)
     {
-        await page.waitFor(5000);
+        await page.waitFor(appConstants.loadingDelay);
         await this.navigator.gotoAddVolunteers();
         await this.updateRoster(churchService);
     }
 
     this.updateRoster = async function(churchService)
     {
-        churchService.roster.forEach(async (roster) => { await this.updateVolunteers(roster); } );        
+        for(let roster of churchService.roster)
+        {
+            await this.updateVolunteers(roster);
+        }
+        //churchService.roster.forEach(async (roster) => { await this.updateVolunteers(roster); } );        
     }
 
     this.updateVolunteers = async function(roster)
     {
-        roster.volunteers.forEach(async (volunteer) => {this.updateVolunteer(roster, volunteer)});        
+        for(let volunteer of roster.volunteers)
+        {
+            await this.updateVolunteer(roster, volunteer);
+        }
+
+        //roster.volunteers.forEach(async (volunteer) => {this.updateVolunteer(roster, volunteer)});        
     }
 
     this.updateVolunteer = async function(roster, volunteer)
@@ -35,7 +45,7 @@ function AddVolunteersWebUpload(page)
         
         const options = { volunteer: volunteer };
 
-        await page.waitFor(4000);
+        await page.waitFor(appConstants.loadingDelay);
   
         await this.page.evaluate((options) => 
         {
@@ -64,7 +74,7 @@ function AddVolunteersWebUpload(page)
 
     this.openPositionSearch = async function(name)
     {        
-        await page.waitFor(4000);
+        await page.waitFor(appConstants.loadingDelay);
 
         const options = { name: name };
 

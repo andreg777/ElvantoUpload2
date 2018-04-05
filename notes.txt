@@ -12,3 +12,6 @@ Steve
 	2.3 split on "C & G Hammonds" or "A. & A.M. Geyer"
 	2.4 split "/" "K. Carlisle/C. Wyght"
 	2.5 must have empty line between service types. its how it stops
+	2.6 positions no duplicates e.g. "Little sheep" and "Little sheep" either "A. Geyer/M. Hammonds" or "Little sheep 1" & "Little sheep 2" In this case "A. Geyer/M. Hammonds" better ?
+	2.7 can use only surname e.g. "Alder" but then in that allowable roster selection can't be Jen and Matt Alder
+	2.8 Duplicates not really issue due to filter selection online. can still happe though but rare.

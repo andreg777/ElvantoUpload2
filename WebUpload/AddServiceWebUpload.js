@@ -7,7 +7,7 @@ function AddServiceWebUpload (page)
     
     this.navigator = new Navigator(page);
 
-    this.uploadService = async function (churchService) 
+    this.createService = async function (churchService) 
     {        
         await this.navigator.gotoAddService();
         await this.selectLocation(churchService.churchType);
@@ -59,7 +59,8 @@ function AddServiceWebUpload (page)
         //TEST
         if(appConstants.testDate && appConstants.testDate.length >= 1)
         {
-            dateValue = appConstants.testDate;
+            dateValue = new Date(appConstants.testDate, month, day);
+
         }
         else 
         {

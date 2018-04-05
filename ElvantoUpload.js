@@ -26,14 +26,12 @@ const ElvantoWebUpload = require("./WebUpload/ElvantoWebUpload");
     
     const webUpload = new ElvantoWebUpload(page);
   
-    await webUpload.process(churchServices);  
-
-
+    await webUpload.process(churchServices);
   }
   catch(e)
   {
-    debugger;
     var message = e.message;
+    debugger;
     console.log(message);
   }
 

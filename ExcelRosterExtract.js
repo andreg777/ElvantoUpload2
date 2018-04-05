@@ -39,12 +39,14 @@ function ExcelRosterExtract ()
   this.readTable = function()
   {
 		var churchServices = [];
-		
-		churchTypes.forEach((churchType) =>
-		{	  			
+
+		for(const churchType of churchTypes)
+		{
 			var startAddress = this.findAddressByContent(churchType.name);			
-			churchServices = this.readChurchTypeTable(startAddress, churchType);
-		});
+			var readServices = this.readChurchTypeTable(startAddress, churchType);
+
+			churchServices = churchServices.concat(readServices);			
+		}
 
 		return churchServices;
   }
@@ -116,32 +118,44 @@ function ExcelRosterExtract ()
 		
 		var firstLastname = value.split(' ');
 
-		var foundNothing = firstLastname.length === 0;			
+		var foundNothing = firstLastname.length === 0;
 		
-		if(foundNothing === false)
+		if(foundNothing)
 		{
-			const person = new Person();
+			return null;
+		}
+
+		const person = new Person();
 		
-			var onlySurname = firstLastname.length === 1;
-			if(onlySurname)
+		var onlySurname = firstLastname.length === 1;
+
+		if(onlySurname)
+		{
+			var lastname = firstLastname[0];
+			var invalidSurname = lastname.length <= 2;
+			
+			if(invalidSurname)
 			{
-				 person.lastname = firstLastname[0];
-				 return person;
+				return null;
 			}
-	
-			const multipleNames = firstLastname.length == 2;		
-			if(multipleNames)
-			{
-				var names = firstLastname[0]
-				var lastname = firstLastname[1];
-				person.lastname = lastname;
-				
-				this.extractNamesAndInitials(person, names);
-			}			
+
+			person.lastname = lastname;
 
 			return person;
 		}
-		return null;
+	
+		const multipleNames = firstLastname.length == 2;
+
+		if(multipleNames)
+		{
+			var names = firstLastname[0]
+			var lastname = firstLastname[1];
+			person.lastname = lastname;
+				
+			this.extractNamesAndInitials(person, names);
+		}
+
+		return person;
 	}
 	
 	this.extractNamesAndInitials = function(person, names)
@@ -164,6 +178,7 @@ function ExcelRosterExtract ()
 			person.initial = firstnameOrInitial;
 		}		
 	}
+
 	this.splitVolunteers = function(content)
 	{
 		if(!content)
@@ -171,7 +186,51 @@ function ExcelRosterExtract ()
 			return [];
 		}
 
-		return content.split('&').join('|').split('\\/').join('|').split('|');
+		var splitContent = null;
+
+		if(content.indexOf("&") >= 0)
+		{
+			splitContent =  content.split("&");
+		}
+		else if(content.indexOf("\\/") >= 0)
+		{
+			splitContent =  content.split("\\/");
+		}
+		else if(content.indexOf(" and "))
+		{
+			splitContent = content.split(" and ");
+		}
+
+		if(!splitContent)
+		{
+			return [content];
+		}
+		var hasSurname = content.lastIndexOf(' ') >= 0;
+		
+		var possibleSurname;
+		
+		if(hasSurname)
+		{
+			possibleSurname = content.substring(content.lastIndexOf(' '), content.length);
+			possibleSurname = possibleSurname.trim();
+		}
+
+		var result = [];
+
+		for(var value of splitContent)
+		{
+			value = value.replace('.','');
+			value = value.trim();
+
+			if(value.length <= 1)
+			{
+				value = value + ' ' + possibleSurname;
+			}
+			
+			result.push(value);
+		}
+
+		return result;
 	}
 
 	this.readDates = function (startAddress)
@@ -186,6 +245,7 @@ function ExcelRosterExtract ()
 		while(currentValue)
 		{
 			column++
+
 			currentValue = this.readCell(column,row);
 			
 			if(currentValue)
@@ -195,7 +255,7 @@ function ExcelRosterExtract ()
 				if(isNaN(rosterDate) === false)
 				{
 					let year = new Date().getFullYear();
-					let month = rosterDate.getMonth() + 1;
+					let month = rosterDate.getMonth();
 					let day = rosterDate.getDate();
 
 					var currentDate = new Date(year, month, day);
