@@ -50,23 +50,23 @@ function AddServiceWebUpload (page)
 
     this.selectDate = async function(churchService)
     {     
-        const year = new Date().getFullYear().toString().padStart(2,'0');
-        const month = new Date().getMonth().toString().padStart(2,'0');
-        const day = new Date().getDay().toString().padStart(2,'0');
+        //debugger;
+
+        let year = churchService.date.getFullYear();
+        let month = churchService.date.getMonth() + 1;
+        let day = churchService.date.getDate();
+
+        //debugger;
+        if (appConstants.testYear && appConstants.testYear.length >= 4)
+        {
+            year = appConstants.testYear;
+        }
+
+        day = day.toString().padStart(2,'0');
+        month = month.toString().padStart(2,'0');
+        year = year.toString().padStart(2,'0');
 
         var dateValue = day + '/' + month + '/' + year;
-
-        //TEST
-        if(appConstants.testDate && appConstants.testDate.length >= 1)
-        {
-            dateValue = new Date(appConstants.testDate, month, day);
-
-        }
-        else 
-        {
-            debugger;
-            //check the date
-        }
 
         await this.page.evaluate((dateValue) => 
         {

@@ -14,7 +14,7 @@ const ElvantoWebUpload = require("./WebUpload/ElvantoWebUpload");
 
     const churchServices = await rosterExctract.readData();
     
-    const browser = await puppeteer.launch({headless: false, slowMo:30});
+    const browser = await puppeteer.launch({ headless: false, slowMo:50 });
   
     const page = await browser.newPage();
 
@@ -27,6 +27,8 @@ const ElvantoWebUpload = require("./WebUpload/ElvantoWebUpload");
     const webUpload = new ElvantoWebUpload(page);
   
     await webUpload.process(churchServices);
+
+    console.log("complete");
   }
   catch(e)
   {

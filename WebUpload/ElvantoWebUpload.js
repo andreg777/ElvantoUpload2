@@ -20,6 +20,8 @@ function ElvantoWebUpload (page)
       }
       catch(e)
       {
+        console.log("error processing churchservice")
+        console.log(e)
         debugger;
       }
 

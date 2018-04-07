@@ -20,7 +20,6 @@ function AddVolunteersWebUpload(page)
         {
             await this.updateVolunteers(roster);
         }
-        //churchService.roster.forEach(async (roster) => { await this.updateVolunteers(roster); } );        
     }
 
     this.updateVolunteers = async function(roster)
@@ -29,8 +28,6 @@ function AddVolunteersWebUpload(page)
         {
             await this.updateVolunteer(roster, volunteer);
         }
-
-        //roster.volunteers.forEach(async (volunteer) => {this.updateVolunteer(roster, volunteer)});        
     }
 
     this.updateVolunteer = async function(roster, volunteer)
@@ -40,17 +37,50 @@ function AddVolunteersWebUpload(page)
         await this.selectPositionVolunteer(volunteer);
     }
     
-    this.selectPositionVolunteer = async function(volunteer)
+    this.createNameSearchText = function (volunteer)
     {
+        let searchText = null;
+
+        if(!volunteer || !volunteer.lastname)
+        {
+            return searchText;
+        }
+
+        searchText = volunteer.lastname;
+
+        if(volunteer.firstname)
+        {
+            searchText = searchText + ", " + volunteer.lastname;
+        }
+        else if(volunteer.initial)
+        {
+            searchText = searchText + ", " + volunteer.initial;
+        }
+        else
+        {
+            
+        }
+
+        return searchText;
+    }
+
+    this.selectPositionVolunteer = async function(volunteer)
+    {        
+        console.log("selectPositionVolunteer");
+
+        const searchText = this.createNameSearchText(volunteer);
         
-        const options = { volunteer: volunteer };
+        const options = { volunteer: volunteer, searchText: searchText, appConstants: appConstants };
 
         await page.waitFor(appConstants.loadingDelay);
   
         await this.page.evaluate((options) => 
         {
-            var xpathSearch =  `//a[contains(., '${ options.volunteer.lastname }')]`
+            var xpathSearch =  `//a[contains(., '${ options.searchText }')]`
             
+            console.log("searching volunteer with:")
+            console.log(xpathSearch);
+
             var volunteers = document.evaluate(xpathSearch, document, null, XPathResult.ANY_TYPE, null );
             
             var volunteer = volunteers.iterateNext();
@@ -61,19 +91,40 @@ function AddVolunteersWebUpload(page)
 
                 setTimeout(function()
                 {
+                    console.log("clicking confirmed button");
                     var confirmedButton = document.querySelector('.btn.btn-submit');
-                    confirmedButton.click();
-                },3000);                
+                    if(confirmedButton)
+                    {
+                        confirmedButton.click();
+                    }
+                    else
+                    {
+                        console.log("confirmed button not found");
+                    }
+
+                },options.appConstants.loadingDelay);                
             }
             else
             {
-                console.log('volunteer not found');
+                //TODO: log this volunteer not found in elvanto and print name
+                var cancelButton = document.querySelector(".btn.btn-cancel");
+                console.log("cant find volunteer");
+                if(cancelButton)
+                {
+                    console.log("cancelling");
+                    cancelButton.click();                    
+                }
+                else
+                {
+                    console.log("cant find cancel button");
+                }
             }
         },options);
     }
 
     this.openPositionSearch = async function(name)
     {        
+        console.log("openPositionSearch: " + name);
         await page.waitFor(appConstants.loadingDelay);
 
         const options = { name: name };
@@ -82,6 +133,7 @@ function AddVolunteersWebUpload(page)
         {
             var xpathSearch = '//div[contains(text(), "' + options.name + '")]';
             
+            console.log("searching for position with ")
             console.log(xpathSearch);
             
             var positions = document.evaluate(xpathSearch, document, null, XPathResult.ANY_TYPE, null );
@@ -91,14 +143,20 @@ function AddVolunteersWebUpload(page)
             if (position)
             {
                 var searchButton = position.querySelector('a')
+
                 if(searchButton)
                 {
                     searchButton.click();
+                    console.log("search button clicked")
+                }
+                else
+                {
+                    console.log("Search button not found")
                 }
             }
             else
             {
-
+                console.log('position not found ')
             }
             console.log(position);
             console.log('done');
