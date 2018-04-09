@@ -5,6 +5,8 @@ Steve
 	1.2 elvanto service type must have word "Classic Church" / "Morning Church" / "Night Church"
 	1.3 excel "Computer" to "Overhead"
 	1.4 excel Prayers to Prayer
+	1.5 welcome Alder can it be M. Alder & J. Alder
+	1.6 rename "VanWyk" to "van Wyk"
 	
 2. Rules
 	2.1 "&" will split names

@@ -33,7 +33,7 @@ function AddVolunteersWebUpload(page)
     this.updateVolunteer = async function(roster, volunteer)
     {
         var name = roster.name;
-        await this.openPositionSearch(name);
+        await this.openPositionVolunteers(name);
         await this.selectPositionVolunteer(volunteer);
     }
     
@@ -76,7 +76,9 @@ function AddVolunteersWebUpload(page)
   
         await this.page.evaluate((options) => 
         {
-            var xpathSearch =  `//a[contains(., '${ options.searchText }')]`
+            //var xpathSearch = "//div[contains(text(), '" + options.name + "') and contains(@class,'position-header')]";
+
+            var xpathSearch =  "//a[contains(., '" + options.searchText + "')]";
             
             console.log("searching volunteer with:")
             console.log(xpathSearch);
@@ -92,10 +94,13 @@ function AddVolunteersWebUpload(page)
                 setTimeout(function()
                 {
                     console.log("clicking confirmed button");
+
                     var confirmedButton = document.querySelector('.btn.btn-submit');
+
                     if(confirmedButton)
-                    {
+                    {                        
                         confirmedButton.click();
+                        console.log("confirmed button clicked")
                     }
                     else
                     {
@@ -111,8 +116,9 @@ function AddVolunteersWebUpload(page)
                 console.log("cant find volunteer");
                 if(cancelButton)
                 {
-                    console.log("cancelling");
-                    cancelButton.click();                    
+                    console.log("cancel button click");
+                    cancelButton.click();              
+                    console.log("cancel button clicked");      
                 }
                 else
                 {
@@ -122,16 +128,17 @@ function AddVolunteersWebUpload(page)
         },options);
     }
 
-    this.openPositionSearch = async function(name)
+    this.openPositionVolunteers = async function(name)
     {        
-        console.log("openPositionSearch: " + name);
+
+        console.log("openPositionVolunteers: " + name);
         await page.waitFor(appConstants.loadingDelay);
 
         const options = { name: name };
 
         await this.page.evaluate((options) =>
         {
-            var xpathSearch = '//div[contains(text(), "' + options.name + '")]';
+            var xpathSearch = "//div[contains(text(), '" + options.name + "') and contains(@class,'position-header')]";
             
             console.log("searching for position with ")
             console.log(xpathSearch);
@@ -142,11 +149,17 @@ function AddVolunteersWebUpload(page)
 
             if (position)
             {
+                console.log(position);
                 var searchButton = position.querySelector('a')
-
+                
                 if(searchButton)
                 {
-                    searchButton.click();
+                    while(document.querySelector('.el-modal-wrapper') == null)
+                    {
+                        console.log("clicking search button")
+                        searchButton.click();
+                    }
+                    
                     console.log("search button clicked")
                 }
                 else
@@ -158,7 +171,6 @@ function AddVolunteersWebUpload(page)
             {
                 console.log('position not found ')
             }
-            console.log(position);
             console.log('done');
         },options);
     }

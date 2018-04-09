@@ -43,9 +43,11 @@ function ExcelRosterExtract ()
 		for(const churchType of churchTypes)
 		{
 			var startAddress = this.findAddressByContent(churchType.name);			
-			var readServices = this.readChurchTypeTable(startAddress, churchType);
-
-			churchServices = churchServices.concat(readServices);			
+			if(startAddress)
+			{
+				var readServices = this.readChurchTypeTable(startAddress, churchType);
+				churchServices = churchServices.concat(readServices);				
+			}
 		}
 
 		return churchServices;
