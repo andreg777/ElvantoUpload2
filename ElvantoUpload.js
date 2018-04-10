@@ -42,7 +42,7 @@ const appConstants = require("./appConstants");
   catch(e)
   {
     var message = e.message;
-    debugger;
+    console.log("error time");
     console.log(message);
   }
 

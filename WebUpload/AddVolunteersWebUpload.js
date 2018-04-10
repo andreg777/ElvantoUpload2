@@ -33,7 +33,7 @@ function AddVolunteersWebUpload(page)
     this.updateVolunteer = async function(roster, volunteer)
     {
         var name = roster.name;
-        await this.openPositionVolunteers(name);
+        await this.clickPositionAddButton(name);
         await this.selectPositionVolunteer(volunteer);
     }
     
@@ -66,18 +66,16 @@ function AddVolunteersWebUpload(page)
 
     this.selectPositionVolunteer = async function(volunteer)
     {        
-        console.log("selectPositionVolunteer");
-
         const searchText = this.createNameSearchText(volunteer);
-        
+
+        console.log("selectPositionVolunteer:searchText=" + searchText);
+
         const options = { volunteer: volunteer, searchText: searchText, appConstants: appConstants };
 
         await page.waitFor(appConstants.loadingDelay);
   
         await this.page.evaluate((options) => 
         {
-            //var xpathSearch = "//div[contains(text(), '" + options.name + "') and contains(@class,'position-header')]";
-
             var xpathSearch =  "//a[contains(., '" + options.searchText + "')]";
             
             console.log("searching volunteer with:")
@@ -116,19 +114,23 @@ function AddVolunteersWebUpload(page)
                 console.log("cant find volunteer");
                 if(cancelButton)
                 {
-                    console.log("cancel button click");
+                    console.log("close button click");
                     cancelButton.click();              
-                    console.log("cancel button clicked");      
+                    console.log("close button clicked");      
                 }
                 else
                 {
-                    console.log("cant find cancel button");
+                    console.log("cant find close button");
                 }
             }
         },options);
+        
+        await page.waitFor(appConstants.loadingDelay);
+
     }
 
-    this.openPositionVolunteers = async function(name)
+
+    this.clickPositionAddButton = async function(name)
     {        
 
         console.log("openPositionVolunteers: " + name);
@@ -173,6 +175,8 @@ function AddVolunteersWebUpload(page)
             }
             console.log('done');
         },options);
+
+        await page.waitFor(appConstants.loadingDelay);
     }
 }
 
