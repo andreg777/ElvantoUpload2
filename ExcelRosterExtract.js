@@ -238,6 +238,7 @@ function ExcelRosterExtract ()
 	this.readDates = function (startAddress)
 	{
 		var column = startAddress.column;
+
 		var row = startAddress.row;
 
 		var dates = [];
@@ -252,7 +253,7 @@ function ExcelRosterExtract ()
 			
 			if(currentValue)
 			{				
-				var rosterDate = new Date(Date.parse(currentValue));
+				var rosterDate = this.convertExcelDateSerialToJsDate(currentValue); //new Date(Date.parse(currentValue));
 
 				if(isNaN(rosterDate) === false)
 				{
@@ -290,7 +291,7 @@ function ExcelRosterExtract ()
 		  {
 			  currentValue = currentValue.trim();
 			  properties.push({name: currentValue, row: row});
-		  }	  
+		  }
 	  }
 	  
 	  return properties;
@@ -314,16 +315,36 @@ function ExcelRosterExtract ()
   }
   
   this.readCell = function(column, row)
-	{
+  {
 		column = String.fromCharCode(column);
 		column = column.toString();
 		row = row.toString();
 		
 		var desired_cell = this.sheet[column + row];
 	 
-		var desired_value = (desired_cell ? desired_cell.w : undefined);  
+		var desired_value = (desired_cell ? desired_cell.v : undefined);  
 
 		return desired_value;
+  }
+
+  this.convertExcelDateSerialToJsDate = function(serial)
+  {
+    var utc_days  = Math.floor(serial - 25569);
+	var utc_value = utc_days * 86400;                                        
+	var date_info = new Date(utc_value * 1000);
+	 
+	var fractional_day = serial - Math.floor(serial) + 0.0000001;
+	 
+	var total_seconds = Math.floor(86400 * fractional_day);
+	 
+	var seconds = total_seconds % 60;
+	 
+	total_seconds -= seconds;
+	 
+	var hours = Math.floor(total_seconds / (60 * 60));
+	var minutes = Math.floor(total_seconds / 60) % 60;
+	 
+	return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
   }
 }
 
