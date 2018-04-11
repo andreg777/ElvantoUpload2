@@ -257,13 +257,7 @@ function ExcelRosterExtract ()
 
 				if(isNaN(rosterDate) === false)
 				{
-					let year = new Date().getFullYear();
-					let month = rosterDate.getMonth();
-					let day = rosterDate.getDate();
-
-					var currentDate = new Date(year, month, day);
-					
-					dates.push({ date: currentDate, column: column });
+					dates.push({ date: rosterDate, column: column });
 				}
 			}
 		}

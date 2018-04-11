@@ -92,12 +92,16 @@ function AddVolunteersWebUpload(page)
                 setTimeout(function()
                 {
                     console.log("clicking confirmed button");
+                    var confirmedButton = document.querySelector('.btn.btn-confirmed');
+                    confirmedButton.click();
 
-                    var confirmedButton = document.querySelector('.btn.btn-submit');
+                    console.log("clicking save button");
 
-                    if(confirmedButton)
+                    var saveButton = document.querySelector('.btn.btn-submit');
+
+                    if(saveButton)
                     {                        
-                        confirmedButton.click();
+                        saveButton.click();
                         console.log("confirmed button clicked")
                     }
                     else
