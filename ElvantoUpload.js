@@ -27,6 +27,8 @@ const appConstants = require("./appConstants");
   
     const page = await browser.newPage();
 
+    page.on('console', console.log);
+    
     const navigator = new Navigator(page);
     
     await navigator.gotoApplication();
@@ -42,7 +44,7 @@ const appConstants = require("./appConstants");
   catch(e)
   {
     var message = e.message;
-    console.log("error time");
+    console.log("error:");
     console.log(message);
   }
 

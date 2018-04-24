@@ -11,13 +11,11 @@ function ElvantoWebUpload (page)
 
     this.process = async function (churchServices)
     {
-      //var churchService = churchServices[0];
-
       try
       {
         for(let churchService of churchServices)
         {
-          
+          console.log("uploading service ")
           await this.addServiceWebUpload.createService(churchService);
           
           await this.addVolunteersWebUpload.addVolunteers(churchService);    
@@ -26,7 +24,7 @@ function ElvantoWebUpload (page)
       catch(e)
       {
         console.log("error processing churchservice")
-        console.log(e)
+        console.log(e);
       }
 
 

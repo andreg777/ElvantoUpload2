@@ -46,15 +46,15 @@ function AddVolunteersWebUpload(page)
             return searchText;
         }
 
-        searchText = volunteer.lastname;
+        searchText = volunteer.lastname + ", ";
 
         if(volunteer.firstname)
         {
-            searchText = searchText + ", " + volunteer.lastname;
+            searchText += volunteer.lastname;
         }
         else if(volunteer.initial)
         {
-            searchText = searchText + ", " + volunteer.initial;
+            searchText += volunteer.initial;
         }
         else
         {
@@ -64,13 +64,18 @@ function AddVolunteersWebUpload(page)
         return searchText;
     }
 
-    this.selectPositionVolunteer = async function(volunteer, positon)
-    {        
+    this.selectPositionVolunteer = async function(volunteer, position)
+    {
         const searchText = this.createNameSearchText(volunteer);
 
         //console.log("selectPositionVolunteer:searchText=" + searchText);
 
-        const options = { volunteer: volunteer, searchText: searchText, appConstants: appConstants };
+        const options = { 
+            volunteer: volunteer, 
+            searchText: searchText, 
+            appConstants: appConstants, 
+            position: position 
+        };
 
         await page.waitFor(appConstants.loadingDelay);
   
@@ -78,8 +83,11 @@ function AddVolunteersWebUpload(page)
         {
             var xpathSearch =  "//a[contains(., '" + options.searchText + "')]";
             
+            //console.log("searching in activity: " + options.position);
             //console.log("searching volunteer with:")
             //console.log(xpathSearch);
+
+            var parentNode = document.querySelector(".available-volunteers");
 
             var volunteers = document.evaluate(xpathSearch, document, null, XPathResult.ANY_TYPE, null );
             
@@ -87,6 +95,8 @@ function AddVolunteersWebUpload(page)
             
             if (volunteer)
             {
+                //console.log(volunteer);
+
                 volunteer.click();
 
                 setTimeout(function()
@@ -113,10 +123,11 @@ function AddVolunteersWebUpload(page)
             }
             else
             {
-                console.log(`activity ${position} does not have volunteer assigned: ${volunteer.initial} ${volunteer.firstname} ${volunteer.lastname}`);
+                console.log(`activity ${options.position} does not have volunteer assigned: ${options.volunteer.initial} ${options.volunteer.firstname} ${options.volunteer.lastname}`);
 
                 //TODO: log this volunteer not found in elvanto and print name
                 var cancelButton = document.querySelector(".btn.btn-cancel");
+                
                 if(cancelButton)
                 {
                     //console.log("close button click");
@@ -130,8 +141,7 @@ function AddVolunteersWebUpload(page)
             }
         },options);
         
-        await page.waitFor(appConstants.loadingDelay);
-
+        await page.waitFor(appConstants.loadingDelay); 
     }
 
     this.clickPositionAddButton = async function(name)
@@ -147,14 +157,19 @@ function AddVolunteersWebUpload(page)
             
             //console.log("searching for position with ")
             //console.log(xpathSearch);
-            
+
+            //console.log('start positions search');
+
             var positions = document.evaluate(xpathSearch, document, null, XPathResult.ANY_TYPE, null );
 
             var position = positions.iterateNext();
 
+            //console.log("start iterateNext");
+
             if (position)
             {
                 //console.log(position);
+
                 var searchButton = position.querySelector('a')
                 
                 if(searchButton)
@@ -174,7 +189,7 @@ function AddVolunteersWebUpload(page)
             }
             else
             {
-                console.log('activity not found: ' + options.name);
+                //console.log('activity not found: ' + options.name);
             }
 
             //console.log('done');
