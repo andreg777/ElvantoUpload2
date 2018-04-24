@@ -70,6 +70,7 @@ function ExcelRosterExtract ()
 				churchService.roster = [];
 				churchService.churchType = churchType;
 
+
 				properties.forEach(property => 
 				{
 					let rosterItem = { name: property.name, volunteers: [] };
@@ -86,6 +87,8 @@ function ExcelRosterExtract ()
 	{
 		var rawData = this.readCell(column, row);
 		
+		//rawData = "Barker and Jefferson";
+
 		var volunteers = this.splitVolunteers(rawData);
 		
 		var sanitizedVolunteers = this.getSanitizedVolunteers(volunteers);
@@ -188,51 +191,54 @@ function ExcelRosterExtract ()
 			return [];
 		}
 
-		var splitContent = null;
+		var namesArray = null;
+
+		var isAnd = content.indexOf(" and ") >= 0;
 
 		if(content.indexOf("&") >= 0)
 		{
-			splitContent =  content.split("&");
+			namesArray =  content.split("&");
 		}
 		else if(content.indexOf("\\/") >= 0)
 		{
-			splitContent =  content.split("\\/");
+			namesArray =  content.split("\\/");
 		}
-		else if(content.indexOf(" and "))
+		else if(isAnd)
 		{
-			splitContent = content.split(" and ");
+			namesArray = content.split(" and ");
 		}
 
-		if(!splitContent)
+		if(!namesArray)
 		{
 			return [content];
 		}
-		var hasSurname = content.lastIndexOf(' ') >= 0;
 		
-		var possibleSurname;
-		
-		if(hasSurname)
+		for(let i = 0; i < namesArray.length; i++)
 		{
-			possibleSurname = content.substring(content.lastIndexOf(' '), content.length);
-			possibleSurname = possibleSurname.trim();
-		}
+			var name = namesArray[i].replace(".").trim();
 
-		var result = [];
+			var isInitial = name.length === 1;
 
-		for(var value of splitContent)
-		{
-			value = value.replace('.','');
-			value = value.trim();
-
-			if(value.length <= 1)
+			if(isInitial)
 			{
-				value = value + ' ' + possibleSurname;
+				const notLast = i < namesArray.length - 1;
+
+				if (notLast)
+				{
+					var nextName = namesArray[i + 1];
+
+					var nextNameAndSurname = nextName.split(" ");
+
+					if(nextNameAndSurname.length >= 2)
+					{
+						namesArray[i] = name + ' ' + nextNameAndSurname[1];
+					}
+				}
 			}
-			
-			result.push(value);
 		}
 
-		return result;
+		return namesArray;
+
 	}
 
 	this.readDates = function (startAddress)

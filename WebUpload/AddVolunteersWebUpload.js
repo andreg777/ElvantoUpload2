@@ -32,9 +32,9 @@ function AddVolunteersWebUpload(page)
 
     this.updateVolunteer = async function(roster, volunteer)
     {
-        var name = roster.name;
-        await this.clickPositionAddButton(name);
-        await this.selectPositionVolunteer(volunteer);
+        var position = roster.name;
+        await this.clickPositionAddButton(position);
+        await this.selectPositionVolunteer(volunteer, position);
     }
     
     this.createNameSearchText = function (volunteer)
@@ -64,11 +64,11 @@ function AddVolunteersWebUpload(page)
         return searchText;
     }
 
-    this.selectPositionVolunteer = async function(volunteer)
+    this.selectPositionVolunteer = async function(volunteer, positon)
     {        
         const searchText = this.createNameSearchText(volunteer);
 
-        console.log("selectPositionVolunteer:searchText=" + searchText);
+        //console.log("selectPositionVolunteer:searchText=" + searchText);
 
         const options = { volunteer: volunteer, searchText: searchText, appConstants: appConstants };
 
@@ -78,8 +78,8 @@ function AddVolunteersWebUpload(page)
         {
             var xpathSearch =  "//a[contains(., '" + options.searchText + "')]";
             
-            console.log("searching volunteer with:")
-            console.log(xpathSearch);
+            //console.log("searching volunteer with:")
+            //console.log(xpathSearch);
 
             var volunteers = document.evaluate(xpathSearch, document, null, XPathResult.ANY_TYPE, null );
             
@@ -91,40 +91,41 @@ function AddVolunteersWebUpload(page)
 
                 setTimeout(function()
                 {
-                    console.log("clicking confirmed button");
+                    //console.log("clicking confirmed button");
                     var confirmedButton = document.querySelector('.btn.btn-confirmed');
                     confirmedButton.click();
 
-                    console.log("clicking save button");
+                    //console.log("clicking save button");
 
                     var saveButton = document.querySelector('.btn.btn-submit');
 
                     if(saveButton)
                     {                        
                         saveButton.click();
-                        console.log("confirmed button clicked")
+                        //console.log("confirmed button clicked")
                     }
                     else
                     {
-                        console.log("confirmed button not found");
+                        //console.log("confirmed button not found");
                     }
 
                 },options.appConstants.loadingDelay);                
             }
             else
             {
+                console.log(`activity ${position} does not have volunteer assigned: ${volunteer.initial} ${volunteer.firstname} ${volunteer.lastname}`);
+
                 //TODO: log this volunteer not found in elvanto and print name
                 var cancelButton = document.querySelector(".btn.btn-cancel");
-                console.log("cant find volunteer");
                 if(cancelButton)
                 {
-                    console.log("close button click");
+                    //console.log("close button click");
                     cancelButton.click();              
-                    console.log("close button clicked");      
+                    //console.log("close button clicked");      
                 }
                 else
                 {
-                    console.log("cant find close button");
+                    //console.log("cant find close button");
                 }
             }
         },options);
@@ -133,11 +134,9 @@ function AddVolunteersWebUpload(page)
 
     }
 
-
     this.clickPositionAddButton = async function(name)
-    {        
-
-        console.log("openPositionVolunteers: " + name);
+    {
+        //console.log("openPositionVolunteers: " + name);
         await page.waitFor(appConstants.loadingDelay);
 
         const options = { name: name };
@@ -146,8 +145,8 @@ function AddVolunteersWebUpload(page)
         {
             var xpathSearch = "//div[contains(text(), '" + options.name + "') and contains(@class,'position-header')]";
             
-            console.log("searching for position with ")
-            console.log(xpathSearch);
+            //console.log("searching for position with ")
+            //console.log(xpathSearch);
             
             var positions = document.evaluate(xpathSearch, document, null, XPathResult.ANY_TYPE, null );
 
@@ -155,29 +154,31 @@ function AddVolunteersWebUpload(page)
 
             if (position)
             {
-                console.log(position);
+                //console.log(position);
                 var searchButton = position.querySelector('a')
                 
                 if(searchButton)
                 {
                     while(document.querySelector('.el-modal-wrapper') == null)
                     {
-                        console.log("clicking search button")
+                        //console.log("clicking search button")
                         searchButton.click();
                     }
                     
-                    console.log("search button clicked")
+                    //console.log("search button clicked")
                 }
                 else
                 {
-                    console.log("Search button not found")
+                    //console.log("Search button not found")
                 }
             }
             else
             {
-                console.log('position not found ')
+                console.log('activity not found: ' + options.name);
             }
-            console.log('done');
+
+            //console.log('done');
+
         },options);
 
         await page.waitFor(appConstants.loadingDelay);
