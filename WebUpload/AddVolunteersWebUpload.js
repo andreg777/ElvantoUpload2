@@ -87,7 +87,7 @@ function AddVolunteersWebUpload(page)
             //console.log("searching volunteer with:")
             //console.log(xpathSearch);
 
-            var parentNode = document.querySelector(".available-volunteers");
+            //var parentNode = document.querySelector(".available-volunteers");
 
             var volunteers = document.evaluate(xpathSearch, document, null, XPathResult.ANY_TYPE, null );
             
@@ -112,18 +112,18 @@ function AddVolunteersWebUpload(page)
                     if(saveButton)
                     {                        
                         saveButton.click();
-                        //console.log("confirmed button clicked")
+                        console.log(`assigned volunteer ${options.searchText} to ${options.position}`);
                     }
                     else
                     {
-                        //console.log("confirmed button not found");
+                        console.log("confirmed button not found");
                     }
 
                 },options.appConstants.loadingDelay);                
             }
             else
             {
-                console.log(`activity ${options.position} does not have volunteer assigned: ${options.volunteer.initial} ${options.volunteer.firstname} ${options.volunteer.lastname}`);
+                console.log(`ERROR: Did not assign volunteer ${options.searchText}. Check ${options.position} does have ${options.searchText} available to select. `);
 
                 //TODO: log this volunteer not found in elvanto and print name
                 var cancelButton = document.querySelector(".btn.btn-cancel");
@@ -189,7 +189,7 @@ function AddVolunteersWebUpload(page)
             }
             else
             {
-                //console.log('activity not found: ' + options.name);
+                console.log('ERROR activity not found: ' + options.name);
             }
 
             //console.log('done');

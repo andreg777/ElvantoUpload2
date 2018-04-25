@@ -15,7 +15,8 @@ function ElvantoWebUpload (page)
       {
         for(let churchService of churchServices)
         {
-          console.log("uploading service ")
+          console.log(`starting upload for service ${churchService.churchType.name}`);
+          
           await this.addServiceWebUpload.createService(churchService);
           
           await this.addVolunteersWebUpload.addVolunteers(churchService);    

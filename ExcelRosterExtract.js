@@ -199,9 +199,9 @@ function ExcelRosterExtract ()
 		{
 			namesArray =  content.split("&");
 		}
-		else if(content.indexOf("\\/") >= 0)
+		else if(content.indexOf("\/") >= 0)
 		{
-			namesArray =  content.split("\\/");
+			namesArray =  content.split("\/");
 		}
 		else if(isAnd)
 		{

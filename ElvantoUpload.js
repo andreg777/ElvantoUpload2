@@ -27,8 +27,10 @@ const appConstants = require("./appConstants");
   
     const page = await browser.newPage();
 
-    page.on('console', console.log);
-    
+    page.on('console', msg => {
+      for (let i = 0; i < msg.args.length; ++i)
+        console.log(`${i}: ${msg.args[i]}`);        
+    });    
     const navigator = new Navigator(page);
     
     await navigator.gotoApplication();
