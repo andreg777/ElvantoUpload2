@@ -16,10 +16,11 @@ function ElvantoWebUpload (page)
         for(let churchService of churchServices)
         {
           console.log(`starting upload for service ${churchService.churchType.name}`);
-          
-          await this.addServiceWebUpload.createService(churchService);
-          
-          await this.addVolunteersWebUpload.addVolunteers(churchService);    
+          console.log("----------------------------------------------------");
+
+          await this.addServiceWebUpload.createService(churchService);          
+          await this.addVolunteersWebUpload.addVolunteers(churchService);
+
         }
       }
       catch(e)

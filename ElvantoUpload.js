@@ -27,10 +27,29 @@ const appConstants = require("./appConstants");
   
     const page = await browser.newPage();
 
+  
     page.on('console', msg => {
-      for (let i = 0; i < msg.args.length; ++i)
-        console.log(`${i}: ${msg.args[i]}`);        
-    });    
+      //debugger;
+      if(msg._text)
+      {
+        if(msg._text.indexOf)
+        {
+          if(msg._text.indexOf("Wootric") >= 0)
+          {
+            return;
+          }
+        }
+      }
+      console.log(msg._text);
+      //for (let i = 0; i < msg.args.length; ++i)
+      //  console.log(`${i}: ${msg.args[i]}`);        
+    });
+  
+    
+    
+    //page.on('console', console.log);
+    
+
     const navigator = new Navigator(page);
     
     await navigator.gotoApplication();
