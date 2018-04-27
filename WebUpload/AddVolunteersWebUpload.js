@@ -61,7 +61,7 @@ function AddVolunteersWebUpload(page)
             
         }
 
-        return searchText;
+        return searchText.toLowerCase();
     }
 
     this.selectPositionVolunteer = async function(volunteer, position)
@@ -81,8 +81,10 @@ function AddVolunteersWebUpload(page)
   
         await this.page.evaluate((options) => 
         {
-            var xpathSearch =  "//a[contains(., '" + options.searchText + "')]";
+            //var xpathSearch =  "//a[contains(., " + options.searchText + ")]";
             
+            var xpathSearch =  "//a[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '" + options.searchText + "')]";
+
             //console.log("searching in activity: " + options.position);
             //console.log("searching volunteer with:")
             //console.log(xpathSearch);
@@ -141,7 +143,7 @@ function AddVolunteersWebUpload(page)
             }
         },options);
         
-        await page.waitFor(appConstants.loadingDelay); 
+        await page.waitFor(appConstants.loadingDelay + 100); 
     }
 
     this.clickPositionAddButton = async function(name)

@@ -41,15 +41,8 @@ const appConstants = require("./appConstants");
         }
       }
       console.log(msg._text);
-      //for (let i = 0; i < msg.args.length; ++i)
-      //  console.log(`${i}: ${msg.args[i]}`);        
     });
   
-    
-    
-    //page.on('console', console.log);
-    
-
     const navigator = new Navigator(page);
     
     await navigator.gotoApplication();
