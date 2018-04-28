@@ -13,15 +13,37 @@ function ElvantoWebUpload (page)
     {
       try
       {
+        var startTime = new Date();
+
+        churchServices.sort((a, b) => 
+        {
+          if(a.date > b.date)
+          {
+              return 1;
+          }
+          else if(a.date < b.date)
+          {
+              return -1;
+          }
+          return 0;
+        });
+        
         for(let churchService of churchServices)
         {
-          console.log(`starting upload for service ${churchService.churchType.name}`);
+          console.log("----------------------------------------------------")
+          console.log(`starting upload for service ${churchService.churchType.name} ${churchService.date.getDate()}/${churchService.date.getMonth() + 1} (day/month)`);
           console.log("----------------------------------------------------");
 
           await this.addServiceWebUpload.createService(churchService);          
           await this.addVolunteersWebUpload.addVolunteers(churchService);
 
         }
+
+        var endTime = new Date();
+
+        var time = Math.round((endTime.getTime() - startTime.getTime()) / 1000 / 60);
+
+        console.log(`duration: ${time} minutes`);
       }
       catch(e)
       {
