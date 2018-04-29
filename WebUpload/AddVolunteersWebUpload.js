@@ -50,7 +50,7 @@ function AddVolunteersWebUpload(page)
 
         if(volunteer.firstname)
         {
-            searchText += volunteer.lastname;
+            searchText += volunteer.firstname;
         }
         else if(volunteer.initial)
         {

@@ -87,7 +87,8 @@ function ExcelRosterExtract ()
 	{
 		var rawData = this.readCell(column, row);
 		
-		//rawData = "Barker and Jefferson";
+		//debugger;
+		//rawData = "Mim Hammonds";
 
 		var volunteers = this.splitVolunteers(rawData);
 		
