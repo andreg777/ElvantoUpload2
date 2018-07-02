@@ -160,7 +160,6 @@ function AddVolunteersWebUpload(page)
             
             //console.log("searching for position with ")
             //console.log(xpathSearch);
-
             //console.log('start positions search');
 
             var positions = document.evaluate(xpathSearch, document, null, XPathResult.ANY_TYPE, null );
