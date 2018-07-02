@@ -94,10 +94,11 @@ function AddVolunteersWebUpload(page)
             var volunteers = document.evaluate(xpathSearch, document, null, XPathResult.ANY_TYPE, null );
             
             var volunteer = volunteers.iterateNext();
+
             
             if (volunteer)
             {
-                //console.log(volunteer);
+                //console.log(`found volunteer ${volunteer}`);
 
                 volunteer.click();
 
@@ -170,9 +171,9 @@ function AddVolunteersWebUpload(page)
 
             if (position)
             {
-                //console.log(position);
+                //console.log(`found ${position}`);
 
-                var searchButton = position.querySelector('a')
+                var searchButton = position.querySelector('button')
                 
                 if(searchButton)
                 {

@@ -33,7 +33,8 @@ function ElvantoWebUpload (page)
           console.log("----------------------------------------------------")
           console.log(`starting upload for service ${churchService.churchType.name} ${churchService.date.getDate()}/${churchService.date.getMonth() + 1} (day/month)`);
           console.log("----------------------------------------------------");
-
+            
+          //debugger;
           await this.addServiceWebUpload.createService(churchService);          
           await this.addVolunteersWebUpload.addVolunteers(churchService);
 

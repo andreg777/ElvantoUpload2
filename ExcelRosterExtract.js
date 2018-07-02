@@ -132,6 +132,11 @@ function ExcelRosterExtract ()
 		{
 			firstLastname = value.split('.')
 		}
+		else if (value != null && value.length >= 1)
+		{
+			firstLastname = [];
+			firstLastname.push(value);
+		}
 
 		var foundNothing = firstLastname.length === 0;
 		
