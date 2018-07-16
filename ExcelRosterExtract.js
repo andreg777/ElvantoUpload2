@@ -348,7 +348,7 @@ function ExcelRosterExtract ()
 	  console.log(`serial ${serial}`);
 
       var utc_days  = Math.floor(serial - 25569);
-	  var utc_value = utc_days * 86400;                                        
+	  var utc_value = utc_days * 86400;
 	  var date_info = new Date(utc_value * 1000);
 		
 	  var fractional_day = serial - Math.floor(serial) + 0.0000001;
