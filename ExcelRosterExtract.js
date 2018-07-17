@@ -358,13 +358,13 @@ function ExcelRosterExtract ()
 	  var seconds = total_seconds % 60;
 		
 	  total_seconds -= seconds;
-		
+
 	  var hours = Math.floor(total_seconds / (60 * 60));
 	  var minutes = Math.floor(total_seconds / 60) % 60;
 	  
 	  var convertedDate = new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
 
-	  console.log(convertedDate `${convertedDate}`);
+	  console.log(`convertedDate ${convertedDate}`);
 
 	  return convertedDate;
   }
