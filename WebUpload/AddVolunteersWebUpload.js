@@ -16,6 +16,7 @@ function AddVolunteersWebUpload(page)
 
     this.updateRoster = async function(churchService)
     {
+        console.log('update roster')
         for(let roster of churchService.roster)
         {
             await this.updateVolunteers(roster);
@@ -26,6 +27,7 @@ function AddVolunteersWebUpload(page)
     {
         for(let volunteer of roster.volunteers)
         {
+            console.log("update volunteers");
             await this.updateVolunteer(roster, volunteer);
         }
     }
@@ -33,8 +35,11 @@ function AddVolunteersWebUpload(page)
     this.updateVolunteer = async function(roster, volunteer)
     {
         var position = roster.name;
+        console.log("update volunteer")
         await this.clickPositionAddButton(position);
+        console.log("done clickPositionAddButton");
         await this.selectPositionVolunteer(volunteer, position);
+        console.log("done selectPositionVolunteer");
     }
     
     this.createNameSearchText = function (volunteer)
@@ -158,9 +163,9 @@ function AddVolunteersWebUpload(page)
         {
             var xpathSearch = "//div[contains(text(), '" + options.name + "') and contains(@class,'position-header')]";
             
-            //console.log("searching for position with ")
-            //console.log(xpathSearch);
-            //console.log('start positions search');
+            console.log("searching for position with ")
+            console.log(xpathSearch);
+            console.log('start positions search');
 
             var positions = document.evaluate(xpathSearch, document, null, XPathResult.ANY_TYPE, null );
 
@@ -170,17 +175,20 @@ function AddVolunteersWebUpload(page)
 
             if (position)
             {
-                //console.log(`found ${position}`);
+                console.log(`found ${position}`);
 
                 var searchButton = position.querySelector('button')
                 
                 if(searchButton)
                 {
-                    while(document.querySelector('.el-modal-wrapper') == null)
-                    {
-                        //console.log("clicking search button")
-                        searchButton.click();
-                    }
+                    console.log("found search button ");
+
+                    searchButton.click();
+
+                    //while(document.querySelector('.el-modal-wrapper') == null)
+                    //{
+                    //    console.log("clicking search button")
+                    //}
                     
                     //console.log("search button clicked")
                 }

@@ -51,23 +51,6 @@ function ElvantoWebUpload (page)
         console.log("error processing churchservice")
         console.log(e);
       }
-
-
-      return;
-
-      for (let churchService of churchServices)
-      {
-        try
-        {
-          await this.addServiceWebUpload.createService(churchService);
-          await this.addVolunteersWebUpload.addVolunteers(churchService);
-        }
-        catch(e)
-        {
-          debugger;
-          console.log(e.message);
-        }
-      }
     }
 }
 

@@ -23,8 +23,11 @@ function Menu(page)
 		{
 			var elements = document.querySelectorAll('li a[href*=service_volunteers]');
 			
-			console.log(elements.length);
-
+			if (elements.length === 0)
+			{
+				console.log("volunteers button not found");
+				return;
+			}
 			elements[0].click();
 
 		},options);

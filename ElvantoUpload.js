@@ -22,11 +22,13 @@ const appConstants = require("./appConstants");
         headless: false, 
         slowMo: appConstants.slowMo,
         executablePath: appConstants.exePath,
-        args: ['--window-size=1500,1000']
+        //args: ['--window-size=3500,2000']
+        args: ['--start-fullscreen']
       });
   
     const page = await browser.newPage();
-
+    
+    await page.setViewport({width: 2400, height: 1000});
   
     page.on('console', msg => {
       //debugger;
